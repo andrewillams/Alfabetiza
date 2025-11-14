@@ -15,6 +15,16 @@ Este projeto possui **deploy automático** para GitHub Pages!
 ### 🌐 Após Ativado:
 Seu jogo estará online em: **https://andrewillams.github.io/Alfabetiza/**
 
+## 📱 Instalar como App (PWA)
+
+O jogo pode ser **instalado no celular** como um aplicativo!
+- ✅ Funciona **offline**
+- ✅ Ícone na tela inicial
+- ✅ Modo tela cheia
+- ✅ Rápido e nativo
+
+👉 **[Ver Instruções de Instalação (iPhone/Android)](INSTALACAO_IPHONE.md)**
+
 ---
 
 ## ✨ Características
