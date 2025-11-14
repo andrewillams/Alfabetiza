@@ -759,11 +759,40 @@
 
   <div class="confetti" id="confetti"></div>
 
+  <!-- Notificação de Conquista -->
+  <div id="achievement-notification" style="
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+    transform: translateX(400px);
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 10000;
+    min-width: 280px;
+    max-width: 350px;
+  ">
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <div id="achievement-emoji" style="font-size: 3rem; flex-shrink: 0;"></div>
+      <div style="flex: 1;">
+        <div style="font-size: 0.75rem; opacity: 0.9; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px;">🏆 Conquista Desbloqueada!</div>
+        <div id="achievement-title" style="font-size: 1.1rem; font-weight: 700; margin-bottom: 4px;"></div>
+        <div id="achievement-desc" style="font-size: 0.85rem; opacity: 0.95;"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Banco de Palavras -->
   <script src="js/words-bank.js"></script>
 
   <!-- Sistema de Sons -->
   <script src="js/sounds.js"></script>
+
+  <!-- Sistema de Conquistas -->
+  <script src="js/achievements.js"></script>
 
   <!-- Jogo Principal -->
   <script>
@@ -792,6 +821,22 @@
     let usedWords = []; // Palavras usadas no nível atual
     let allWordsPlayed = new Set(); // Todas as palavras únicas jogadas na sessão
     let currentCategory = 'all'; // Categoria selecionada ('all' para todas)
+
+    // Estatísticas para conquistas
+    let gameStats = {
+      score: 0,
+      errors: 0,
+      currentStreak: 0,
+      bestStreak: 0,
+      levelReached: 'easy',
+      categoriesPlayed: 0,
+      wordsInSession: 0,
+      uniqueWords: 0,
+      recordsBroken: parseInt(localStorage.getItem('recordsBroken') || '0')
+    };
+
+    // Rastrear categorias jogadas
+    let categoriesUsedSet = new Set();
 
     // Atualiza recorde inicial
     highScoreEl.textContent = highScore;
@@ -846,6 +891,10 @@
         // Atualiza categoria
         currentCategory = btn.dataset.mode;
 
+        // 📊 Rastreia categorias jogadas
+        categoriesUsedSet.add(currentCategory);
+        gameStats.categoriesPlayed = categoriesUsedSet.size;
+
         // Reseta palavras usadas
         usedWords = [];
 
@@ -877,6 +926,9 @@
         showMessage('Parabéns! Você subiu de nível! 🎉', 'ok');
         launchConfetti();
 
+        // 📊 Atualiza nível alcançado
+        gameStats.levelReached = 'medium';
+
         // 🔊 Som de mudança de nível!
         if (window.gameSounds) window.gameSounds.playLevelUp();
       } else if (score >= 20 && currentLevel === 'medium') {
@@ -885,6 +937,9 @@
         levelBadgeEl.textContent = 'Nível Difícil 🌟🌟🌟';
         showMessage('Incrível! Você é expert! 🏆', 'ok');
         launchConfetti();
+
+        // 📊 Atualiza nível alcançado
+        gameStats.levelReached = 'hard';
 
         // 🔊 Som de mudança de nível!
         if (window.gameSounds) window.gameSounds.playLevelUp();
@@ -995,6 +1050,14 @@
         showMessage("Muito bem! Parabéns! 🎉👏", "ok");
         fillSlot(correctLetter);
         score++;
+
+        // 📊 Atualiza estatísticas para conquistas
+        gameStats.score = score;
+        gameStats.currentStreak++;
+        gameStats.wordsInSession++;
+        gameStats.uniqueWords = allWordsPlayed.size;
+        gameStats.bestStreak = Math.max(gameStats.bestStreak, gameStats.currentStreak);
+
         updateScore();
         updateLevel();
         nextWordBtn.disabled = false;
@@ -1004,11 +1067,18 @@
         // 🔊 Som de acerto!
         if (window.gameSounds) window.gameSounds.playCorrect();
 
+        // 🏆 Verifica conquistas desbloqueadas
+        setTimeout(() => checkAchievements(), 500);
+
         setTimeout(() => speakWord(true), 400);
       } else {
         btn.classList.add("wrong-shake");
         setTimeout(() => btn.classList.remove("wrong-shake"), 400);
         showMessage("Ops! Tente de novo! 😊💪", "error");
+
+        // 📊 Atualiza estatísticas (erro quebra sequência)
+        gameStats.errors++;
+        gameStats.currentStreak = 0;
 
         // 🔊 Som de erro (gentil)
         if (window.gameSounds) window.gameSounds.playWrong();
@@ -1041,6 +1111,10 @@
         highScore = score;
         highScoreEl.textContent = highScore;
         localStorage.setItem('highScore', highScore);
+
+        // 📊 Rastreia quebras de recorde
+        gameStats.recordsBroken++;
+        localStorage.setItem('recordsBroken', gameStats.recordsBroken);
       }
 
       const max = 30;
@@ -1120,6 +1194,64 @@
     repeatSoundBtn.addEventListener("click", () => {
       speakWord(false);
     });
+
+    // ==========================================
+    // SISTEMA DE CONQUISTAS
+    // ==========================================
+
+    /**
+     * Verifica e mostra conquistas desbloqueadas
+     */
+    function checkAchievements() {
+      if (!window.achievementSystem) return;
+
+      const newlyUnlocked = window.achievementSystem.checkAchievements(gameStats);
+
+      // Mostra cada conquista desbloqueada
+      newlyUnlocked.forEach((achievement, index) => {
+        setTimeout(() => {
+          showAchievement(achievement);
+        }, index * 4000); // 4 segundos entre cada notificação
+      });
+    }
+
+    /**
+     * Exibe notificação de conquista
+     */
+    function showAchievement(achievement) {
+      const notification = document.getElementById('achievement-notification');
+      const emojiEl = document.getElementById('achievement-emoji');
+      const titleEl = document.getElementById('achievement-title');
+      const descEl = document.getElementById('achievement-desc');
+
+      // Define conteúdo
+      emojiEl.textContent = achievement.emoji;
+      titleEl.textContent = achievement.title;
+      descEl.textContent = achievement.description;
+
+      // Define cor baseado no tier
+      const colors = {
+        bronze: 'linear-gradient(135deg, #cd7f32 0%, #b87333 100%)',
+        silver: 'linear-gradient(135deg, #c0c0c0 0%, #a8a8a8 100%)',
+        gold: 'linear-gradient(135deg, #ffd700 0%, #ffaa00 100%)',
+        platinum: 'linear-gradient(135deg, #e5e4e2 0%, #b8b8b8 100%)'
+      };
+      notification.style.background = colors[achievement.tier] || colors.bronze;
+
+      // Anima entrada
+      notification.style.transform = 'translateX(0)';
+
+      // Som especial de conquista
+      if (window.gameSounds) {
+        setTimeout(() => window.gameSounds.playStar(), 100);
+        setTimeout(() => window.gameSounds.playStar(), 300);
+      }
+
+      // Anima saída após 3 segundos
+      setTimeout(() => {
+        notification.style.transform = 'translateX(400px)';
+      }, 3500);
+    }
 
     // Suporte para teclado
     document.addEventListener('keydown', (e) => {
