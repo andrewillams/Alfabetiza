@@ -21,9 +21,16 @@ Seu jogo estará online em: **https://andrewillams.github.io/Alfabetiza/**
 
 ### 🎮 Gameplay
 - 🎯 **3 Níveis de Dificuldade**: Fácil (3 letras), Médio (4-5 letras), Difícil (6+ letras)
-- 📚 **400+ Palavras**: Banco gigante com 13 categorias diferentes
+- 📚 **550+ Palavras**: Banco gigante com 18 categorias diferentes
 - 🎲 **Seleção Inteligente**: Sem repetição até esgotar todas as palavras
 - 🔄 **Progressão Automática**: Muda de nível aos 10 e 20 pontos
+- 🔥 **Contador de Sequência**: Mostra acertos consecutivos (aparece aos 3+)
+
+### 🏆 Sistema de Conquistas (NOVO!)
+- 🎖️ **17 Conquistas**: Bronze, Prata, Ouro e Platina
+- 📊 **Painel de Estatísticas**: Veja pontuação, sequências e progresso
+- 🎉 **Notificações Bonitas**: Avisos animados ao desbloquear
+- 💾 **Persistência**: Conquistas salvas entre sessões
 
 ### 🎨 Visual & Áudio
 - 💜 **Design Moderno**: Cores vibrantes, gradientes e animações suaves
@@ -33,7 +40,7 @@ Seu jogo estará online em: **https://andrewillams.github.io/Alfabetiza/**
 
 ### ⚙️ Configurações
 - 🔇 **Toggle de Sons**: Liga/desliga sons do jogo
-- 🐱 **8 Modos de Categoria**: Todas, Animais, Comidas, Objetos, Natureza, Transportes, Cores, Fantasia
+- 🐱 **13 Modos de Categoria**: Todas, Animais, Comidas, Objetos, Natureza, Transportes, Cores, Fantasia, Esportes, Profissões, Corpo, Música, Números
 - 📊 **Modo Focado**: Jogue apenas com palavras de uma categoria específica
 
 ### 📱 Compatibilidade
@@ -96,13 +103,20 @@ Acesse: `https://seu-usuario.github.io/Alfabetiza/`
 ### Controles
 - **🔊 Ouvir**: Repete a palavra em voz alta
 - **⚙️ Configurações**: Abre menu de opções
+- **🏆 Conquistas**: Veja estatísticas e conquistas desbloqueadas
 - **Teclado (PC)**: Digite a letra para selecioná-la
 
 ### Menu de Configurações
 Clique no botão **⚙️** para:
 - **Liga/desligar sons** do jogo
-- **Escolher categoria**: Jogar só animais, comidas, etc.
+- **Escolher categoria**: Jogar só animais, comidas, esportes, números, etc.
 - **Ver informações** sobre o jogo
+
+### Menu de Conquistas
+Clique no botão **🏆** para:
+- **Ver estatísticas**: Pontuação, sequência atual e melhor sequência
+- **Conquistas desbloqueadas**: Veja o que já conquistou
+- **Próximas conquistas**: O que falta para desbloquear
 
 👉 **[Ver Guia Completo de Funcionalidades](FUNCIONALIDADES.md)**
 
@@ -179,9 +193,18 @@ Siga o guia: **[ATIVACAO_RAPIDA.md](ATIVACAO_RAPIDA.md)**
 
 Livre para uso pessoal e educacional. Feito com ❤️ para ajudar na alfabetização infantil.
 
-## 📦 O que há de novo (v2.0)
+## 📦 O que há de novo (v3.0)
 
-### ✅ Implementado
+### ✅ Implementado (v3.0 - Novembro 2025)
+- ✅ **550+ palavras** (antes: 400) - Expansão massiva!
+- ✅ **5 novas categorias**: Esportes, Profissões, Corpo, Música, Números
+- ✅ **Sistema de conquistas** completo (17 conquistas!)
+- ✅ **Painel de estatísticas** com modal dedicado
+- ✅ **Contador de sequência visual** no jogo principal
+- ✅ **Notificações animadas** ao desbloquear conquistas
+- ✅ **Rastreamento de progresso** persistente
+
+### ✅ Implementado (v2.0 - Outubro 2025)
 - ✅ **400+ palavras** (antes: 200)
 - ✅ **Sistema de sons** com Web Audio API
 - ✅ **Menu de configurações** interativo
@@ -192,11 +215,11 @@ Livre para uso pessoal e educacional. Feito com ❤️ para ajudar na alfabetiza
 
 ### 🎯 Próximas Melhorias
 - [ ] Modo de digitação (escrever palavra completa)
-- [ ] Sistema de conquistas/medalhas
 - [ ] Palavras customizadas pelos pais
 - [ ] Temas visuais (cores diferentes)
 - [ ] Modo multiplayer
 - [ ] Gráfico de progresso temporal
+- [ ] Rankings e comparação com amigos
 
 ---
 
