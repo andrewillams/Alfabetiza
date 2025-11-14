@@ -393,15 +393,13 @@
        MENU DE CONFIGURAÇÕES
        ======================================== */
 
-    .settings-btn {
+    .settings-btn, .achievements-btn {
       position: fixed;
       top: 20px;
-      right: 20px;
       width: 50px;
       height: 50px;
       border-radius: 50%;
       border: none;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       font-size: 1.5rem;
       cursor: pointer;
@@ -413,13 +411,29 @@
       justify-content: center;
     }
 
+    .settings-btn {
+      right: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .achievements-btn {
+      right: 85px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+    }
+
     .settings-btn:hover {
       transform: scale(1.1) rotate(90deg);
       box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
     }
 
-    .settings-btn:active {
-      transform: scale(0.95) rotate(90deg);
+    .achievements-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+    }
+
+    .settings-btn:active, .achievements-btn:active {
+      transform: scale(0.95);
     }
 
     .modal {
@@ -618,7 +632,8 @@
   </style>
 </head>
 <body>
-  <!-- Botão de Configurações -->
+  <!-- Botões de Menu -->
+  <button class="achievements-btn" id="achievements-btn" aria-label="Conquistas">🏆</button>
   <button class="settings-btn" id="settings-btn" aria-label="Configurações">⚙️</button>
 
   <!-- Modal de Configurações -->
@@ -705,6 +720,55 @@
         <div style="padding: 15px; background: #f8fafc; border-radius: 15px; font-size: 0.85rem; color: #64748b; line-height: 1.6;">
           <p style="margin: 0 0 8px 0;"><strong>Desenvolvido com ❤️</strong></p>
           <p style="margin: 0;">Joguinho educativo para alfabetização infantil</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Conquistas -->
+  <div class="modal" id="achievements-modal">
+    <div class="modal-content" style="max-width: 700px;">
+      <div class="modal-header">
+        <h2 class="modal-title">🏆 Conquistas e Estatísticas</h2>
+        <button class="close-btn" id="close-achievements-modal">×</button>
+      </div>
+
+      <!-- Estatísticas Gerais -->
+      <div class="settings-section">
+        <div class="section-title">📊 Estatísticas da Sessão</div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+          <div style="background: #f8fafc; padding: 15px; border-radius: 12px; text-align: center;">
+            <div style="font-size: 2rem; font-weight: 700; color: #667eea;" id="stat-score">0</div>
+            <div style="font-size: 0.85rem; color: #64748b;">Pontuação</div>
+          </div>
+          <div style="background: #f8fafc; padding: 15px; border-radius: 12px; text-align: center;">
+            <div style="font-size: 2rem; font-weight: 700; color: #f5576c;" id="stat-streak">0</div>
+            <div style="font-size: 0.85rem; color: #64748b;">Sequência Atual 🔥</div>
+          </div>
+          <div style="background: #f8fafc; padding: 15px; border-radius: 12px; text-align: center;">
+            <div style="font-size: 2rem; font-weight: 700; color: #10b981;" id="stat-best-streak">0</div>
+            <div style="font-size: 0.85rem; color: #64748b;">Melhor Sequência ⭐</div>
+          </div>
+          <div style="background: #f8fafc; padding: 15px; border-radius: 12px; text-align: center;">
+            <div style="font-size: 2rem; font-weight: 700; color: #f59e0b;" id="stat-progress">0%</div>
+            <div style="font-size: 0.85rem; color: #64748b;">Conquistas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conquistas Desbloqueadas -->
+      <div class="settings-section">
+        <div class="section-title">✅ Conquistas Desbloqueadas (<span id="unlocked-count">0</span>)</div>
+        <div id="unlocked-achievements" style="display: grid; gap: 8px; max-height: 200px; overflow-y: auto;">
+          <!-- Preenchido por JS -->
+        </div>
+      </div>
+
+      <!-- Conquistas Bloqueadas -->
+      <div class="settings-section">
+        <div class="section-title">🔒 Próximas Conquistas (<span id="locked-count">0</span>)</div>
+        <div id="locked-achievements" style="display: grid; gap: 8px; max-height: 200px; overflow-y: auto;">
+          <!-- Preenchido por JS -->
         </div>
       </div>
     </div>
@@ -908,6 +972,98 @@
         settingsModal.classList.remove('active');
       });
     });
+
+    // ==========================================
+    // MODAL DE CONQUISTAS
+    // ==========================================
+
+    const achievementsBtn = document.getElementById('achievements-btn');
+    const achievementsModal = document.getElementById('achievements-modal');
+    const closeAchievementsBtn = document.getElementById('close-achievements-modal');
+
+    // Abre modal de conquistas
+    achievementsBtn.addEventListener('click', () => {
+      achievementsModal.classList.add('active');
+      updateAchievementsModal();
+      if (window.gameSounds) window.gameSounds.playClick();
+    });
+
+    // Fecha modal
+    closeAchievementsBtn.addEventListener('click', () => {
+      achievementsModal.classList.remove('active');
+      if (window.gameSounds) window.gameSounds.playClick();
+    });
+
+    // Fecha ao clicar fora
+    achievementsModal.addEventListener('click', (e) => {
+      if (e.target === achievementsModal) {
+        achievementsModal.classList.remove('active');
+      }
+    });
+
+    /**
+     * Atualiza conteúdo do modal de conquistas
+     */
+    function updateAchievementsModal() {
+      if (!window.achievementSystem) return;
+
+      // Atualiza estatísticas
+      document.getElementById('stat-score').textContent = gameStats.score;
+      document.getElementById('stat-streak').textContent = gameStats.currentStreak;
+      document.getElementById('stat-best-streak').textContent = gameStats.bestStreak;
+      document.getElementById('stat-progress').textContent = window.achievementSystem.getProgress() + '%';
+
+      // Pega conquistas
+      const unlocked = window.achievementSystem.getUnlockedAchievements();
+      const locked = window.achievementSystem.getLockedAchievements();
+
+      // Atualiza contadores
+      document.getElementById('unlocked-count').textContent = unlocked.length;
+      document.getElementById('locked-count').textContent = locked.length;
+
+      // Renderiza conquistas desbloqueadas
+      const unlockedEl = document.getElementById('unlocked-achievements');
+      unlockedEl.innerHTML = unlocked.length === 0
+        ? '<div style="padding: 20px; text-align: center; color: #94a3b8;">Nenhuma conquista desbloqueada ainda. Continue jogando! 🎮</div>'
+        : unlocked.map(a => createAchievementCard(a, true)).join('');
+
+      // Renderiza conquistas bloqueadas
+      const lockedEl = document.getElementById('locked-achievements');
+      lockedEl.innerHTML = locked.map(a => createAchievementCard(a, false)).join('');
+    }
+
+    /**
+     * Cria card de conquista
+     */
+    function createAchievementCard(achievement, unlocked) {
+      const tierColors = {
+        bronze: '#cd7f32',
+        silver: '#c0c0c0',
+        gold: '#ffd700',
+        platinum: '#e5e4e2'
+      };
+      const color = tierColors[achievement.tier] || tierColors.bronze;
+
+      return `
+        <div style="
+          background: ${unlocked ? '#f8fafc' : '#f1f5f9'};
+          border-left: 4px solid ${unlocked ? color : '#cbd5e1'};
+          padding: 12px 15px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          ${unlocked ? '' : 'opacity: 0.6;'}
+        ">
+          <div style="font-size: 2rem; ${unlocked ? '' : 'filter: grayscale(100%);'}">${achievement.emoji}</div>
+          <div style="flex: 1;">
+            <div style="font-weight: 700; color: #1e293b; font-size: 0.95rem;">${achievement.title}</div>
+            <div style="font-size: 0.85rem; color: #64748b;">${achievement.description}</div>
+          </div>
+          ${unlocked ? '<div style="font-size: 1.5rem;">✅</div>' : '<div style="font-size: 1.5rem;">🔒</div>'}
+        </div>
+      `;
+    }
 
     function shuffle(array) {
       const newArray = [...array];
