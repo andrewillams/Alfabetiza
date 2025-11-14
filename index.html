@@ -809,6 +809,9 @@
             <div class="score-display">
               🏆 Recorde: <span class="score-number" id="high-score">0</span>
             </div>
+            <div class="score-display" id="streak-display" style="display: none; font-weight: 700;">
+              🔥 Sequência: <span class="score-number" style="color: #f5576c;" id="streak">0</span>
+            </div>
           </div>
           <div class="progress-bar-wrap">
             <div class="progress-bar" id="progress-bar"></div>
@@ -1216,6 +1219,7 @@
 
         updateScore();
         updateLevel();
+        updateStreakDisplay();
         nextWordBtn.disabled = false;
         launchConfetti();
         createStars();
@@ -1235,6 +1239,7 @@
         // 📊 Atualiza estatísticas (erro quebra sequência)
         gameStats.errors++;
         gameStats.currentStreak = 0;
+        updateStreakDisplay();
 
         // 🔊 Som de erro (gentil)
         if (window.gameSounds) window.gameSounds.playWrong();
@@ -1276,6 +1281,29 @@
       const max = 30;
       const percent = Math.min(100, (score / max) * 100);
       progressBarEl.style.width = percent + "%";
+    }
+
+    /**
+     * Atualiza display de sequência
+     */
+    function updateStreakDisplay() {
+      const streakEl = document.getElementById('streak');
+      const streakDisplayEl = document.getElementById('streak-display');
+
+      if (gameStats.currentStreak >= 3) {
+        streakDisplayEl.style.display = 'block';
+        streakEl.textContent = gameStats.currentStreak;
+
+        // Animação de pulso quando atinge múltiplos de 5
+        if (gameStats.currentStreak % 5 === 0) {
+          streakEl.style.animation = 'none';
+          setTimeout(() => {
+            streakEl.style.animation = 'pulse 0.5s ease';
+          }, 10);
+        }
+      } else {
+        streakDisplayEl.style.display = 'none';
+      }
     }
 
     function speakWord(happy) {
