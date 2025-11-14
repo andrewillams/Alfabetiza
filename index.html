@@ -430,6 +430,9 @@
           <div class="progress-bar-wrap">
             <div class="progress-bar" id="progress-bar"></div>
           </div>
+          <div style="margin-top: 8px; font-size: 0.85rem; color: #64748b; text-align: center;">
+            📖 <span id="words-played">0</span> palavras diferentes jogadas
+          </div>
         </div>
       </div>
     </div>
@@ -437,44 +440,11 @@
 
   <div class="confetti" id="confetti"></div>
 
+  <!-- Banco de Palavras -->
+  <script src="js/words-bank.js"></script>
+
+  <!-- Jogo Principal -->
   <script>
-    // Banco de palavras organizado por dificuldade
-    const wordsByLevel = {
-      easy: [
-        { text: "SOL", emoji: "☀️" },
-        { text: "LUA", emoji: "🌙" },
-        { text: "PAI", emoji: "👨" },
-        { text: "MÃE", emoji: "👩" },
-        { text: "CÃO", emoji: "🐕" }
-      ],
-      medium: [
-        { text: "GATO", emoji: "🐱" },
-        { text: "BOLA", emoji: "⚽" },
-        { text: "SAPO", emoji: "🐸" },
-        { text: "FADA", emoji: "🧚‍♀️" },
-        { text: "MALA", emoji: "🧳" },
-        { text: "PATO", emoji: "🦆" },
-        { text: "RATO", emoji: "🐭" },
-        { text: "CASA", emoji: "🏠" },
-        { text: "FOCA", emoji: "🦭" },
-        { text: "DADO", emoji: "🎲" },
-        { text: "MESA", emoji: "🪑" },
-        { text: "FOGO", emoji: "🔥" },
-        { text: "LOBO", emoji: "🐺" },
-        { text: "URSO", emoji: "🐻" },
-        { text: "VELA", emoji: "🕯️" }
-      ],
-      hard: [
-        { text: "FLOR", emoji: "🌸" },
-        { text: "TREM", emoji: "🚂" },
-        { text: "BRUXA", emoji: "🧙‍♀️" },
-        { text: "LIVRO", emoji: "📚" },
-        { text: "PRAIA", emoji: "🏖️" },
-        { text: "ESTRELA", emoji: "⭐" },
-        { text: "CORAÇÃO", emoji: "❤️" },
-        { text: "ARCO-ÍRIS", emoji: "🌈" }
-      ]
-    };
 
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÉÊÍÓÔÕÚ".split("");
 
@@ -489,6 +459,7 @@
     const progressBarEl = document.getElementById("progress-bar");
     const confettiEl = document.getElementById("confetti");
     const levelBadgeEl = document.getElementById("level-badge");
+    const wordsPlayedEl = document.getElementById("words-played");
 
     let currentWord = null;
     let missingIndex = 0;
@@ -496,7 +467,8 @@
     let score = 0;
     let highScore = localStorage.getItem('highScore') || 0;
     let currentLevel = 'easy';
-    let usedWords = [];
+    let usedWords = []; // Palavras usadas no nível atual
+    let allWordsPlayed = new Set(); // Todas as palavras únicas jogadas na sessão
 
     // Atualiza recorde inicial
     highScoreEl.textContent = highScore;
@@ -513,11 +485,13 @@
     function updateLevel() {
       if (score >= 10 && currentLevel === 'easy') {
         currentLevel = 'medium';
+        usedWords = []; // Reseta palavras usadas ao mudar de nível
         levelBadgeEl.textContent = 'Nível Médio 🌟🌟';
         showMessage('Parabéns! Você subiu de nível! 🎉', 'ok');
         launchConfetti();
       } else if (score >= 20 && currentLevel === 'medium') {
         currentLevel = 'hard';
+        usedWords = []; // Reseta palavras usadas ao mudar de nível
         levelBadgeEl.textContent = 'Nível Difícil 🌟🌟🌟';
         showMessage('Incrível! Você é expert! 🏆', 'ok');
         launchConfetti();
@@ -525,15 +499,25 @@
     }
 
     function pickNewWord() {
-      const availableWords = wordsByLevel[currentLevel];
-      const unusedWords = availableWords.filter(w => !usedWords.includes(w.text));
+      // Pega todas as palavras do nível atual
+      const availableWords = getAllWordsForLevel(currentLevel);
 
+      // Filtra palavras não usadas
+      let unusedWords = availableWords.filter(w => !usedWords.includes(w.text));
+
+      // Se todas foram usadas, reseta o histórico
       if (unusedWords.length === 0) {
         usedWords = [];
+        unusedWords = [...availableWords]; // CORRIGIDO: Recalcula a lista
       }
 
+      // Seleciona palavra aleatória
       currentWord = unusedWords[Math.floor(Math.random() * unusedWords.length)];
       usedWords.push(currentWord.text);
+
+      // Adiciona ao contador de palavras únicas jogadas
+      allWordsPlayed.add(currentWord.text);
+      wordsPlayedEl.textContent = allWordsPlayed.size;
 
       // Escolhe posição da letra faltando
       if (currentWord.text.length <= 3) {
@@ -731,6 +715,14 @@
         matchingBtn.click();
       }
     });
+
+    // Mostra estatísticas do banco de palavras no console
+    const stats = getWordBankStats();
+    console.log('📚 BANCO DE PALAVRAS CARREGADO:');
+    console.log(`   Nível Fácil: ${stats.easy.total} palavras (${stats.easy.categories} categorias)`);
+    console.log(`   Nível Médio: ${stats.medium.total} palavras (${stats.medium.categories} categorias)`);
+    console.log(`   Nível Difícil: ${stats.hard.total} palavras (${stats.hard.categories} categorias)`);
+    console.log(`   TOTAL: ${stats.easy.total + stats.medium.total + stats.hard.total} palavras! 🎉`);
 
     // Inicia o jogo
     pickNewWord();
