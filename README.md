@@ -2,6 +2,21 @@
 
 Um jogo interativo e educativo para ajudar crianças de 4-5 anos a aprenderem a ler e escrever de forma lúdica e divertida!
 
+## 🚀 Deploy Automático Configurado!
+
+Este projeto possui **deploy automático** para GitHub Pages!
+
+### ⚡ Ativação Rápida (Uma vez só):
+👉 **[Ver Guia de Ativação Rápida](ATIVACAO_RAPIDA.md)** - 5 passos, 1 minuto
+
+### 📖 Guia Completo:
+👉 **[Ver Guia Completo de Deploy Automático](DEPLOY_AUTOMATICO.md)**
+
+### 🌐 Após Ativado:
+Seu jogo estará online em: **https://andrewillams.github.io/Alfabetiza/**
+
+---
+
 ## ✨ Características
 
 - 🎯 **3 Níveis de Dificuldade**: Fácil, Médio e Difícil (progressão automática)
@@ -106,20 +121,18 @@ easy: [
 - ✅ **Feedback visual**: Cores diferentes para acerto (verde) e erro (vermelho)
 - ✅ **Animações suaves**: Tudo pensado para atrair a atenção infantil
 
-## 🌐 Publicar Online (Opcional)
+## 🌐 Publicar Online
 
-### GitHub Pages (Grátis)
+Este projeto já vem com **GitHub Actions** configurado para deploy automático!
 
-1. Faça commit deste projeto no GitHub
-2. Vá em Settings → Pages
-3. Escolha a branch `main`
-4. Seu jogo estará online em minutos!
+### ⚡ Para Ativar (Uma vez só):
+Siga o guia: **[ATIVACAO_RAPIDA.md](ATIVACAO_RAPIDA.md)**
 
-### Netlify/Vercel (Grátis)
-
-1. Conecte seu repositório GitHub
-2. Deploy automático
-3. URL personalizada disponível
+### 🤖 Como Funciona:
+- Todo push → Deploy automático
+- Sem configuração manual
+- Atualizações em 1-2 minutos
+- URL permanente: https://andrewillams.github.io/Alfabetiza/
 
 ## 🛠️ Tecnologias
 
