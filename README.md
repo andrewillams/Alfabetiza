@@ -19,13 +19,28 @@ Seu jogo estará online em: **https://andrewillams.github.io/Alfabetiza/**
 
 ## ✨ Características
 
-- 🎯 **3 Níveis de Dificuldade**: Fácil, Médio e Difícil (progressão automática)
-- 🎨 **Visual Atraente**: Cores vibrantes, animações suaves e emojis grandes
-- 🔊 **Áudio em Português**: Pronuncia as palavras usando síntese de voz
-- 🏆 **Sistema de Pontuação**: Acompanha progresso e recorde pessoal
-- 📱 **Responsivo**: Funciona perfeitamente em celular, tablet e computador
-- 💾 **Offline**: Não precisa de internet depois de carregar
-- 🎉 **Feedback Positivo**: Confetes, estrelas e mensagens de incentivo
+### 🎮 Gameplay
+- 🎯 **3 Níveis de Dificuldade**: Fácil (3 letras), Médio (4-5 letras), Difícil (6+ letras)
+- 📚 **400+ Palavras**: Banco gigante com 13 categorias diferentes
+- 🎲 **Seleção Inteligente**: Sem repetição até esgotar todas as palavras
+- 🔄 **Progressão Automática**: Muda de nível aos 10 e 20 pontos
+
+### 🎨 Visual & Áudio
+- 💜 **Design Moderno**: Cores vibrantes, gradientes e animações suaves
+- 🔊 **Síntese de Voz**: Pronuncia palavras em português (pt-BR)
+- 🎵 **7 Sons Interativos**: Acerto, erro, level up, estrelas e cliques
+- 🎉 **Feedback Visual**: Confetes, estrelas flutuantes e animações
+
+### ⚙️ Configurações
+- 🔇 **Toggle de Sons**: Liga/desliga sons do jogo
+- 🐱 **8 Modos de Categoria**: Todas, Animais, Comidas, Objetos, Natureza, Transportes, Cores, Fantasia
+- 📊 **Modo Focado**: Jogue apenas com palavras de uma categoria específica
+
+### 📱 Compatibilidade
+- 💻 **Desktop**: Windows, Mac, Linux
+- 📱 **Mobile**: iOS, Android (touch-friendly)
+- 💾 **Offline**: Funciona sem internet após carregar
+- 🌐 **Navegadores**: Chrome, Safari, Firefox, Edge
 
 ## 🎓 Pedagogia
 
@@ -71,15 +86,25 @@ Acesse: `https://seu-usuario.github.io/Alfabetiza/`
 
 ## 🎮 Como Jogar
 
-1. **Olhe a imagem** - Um emoji aparecerá representando uma palavra
-2. **Veja a palavra incompleta** - Uma letra estará faltando
-3. **Escolha a letra correta** - Clique/toque na letra que completa a palavra
-4. **Comemore!** - Ao acertar, veja confetes e ouça "Muito bem!"
-5. **Próxima palavra** - Clique em "Próxima" para continuar
+### Passo a Passo
+1. **Veja o emoji** 🐱 - Representa a palavra
+2. **Observe a palavra**: `G A _ O` - Uma letra está faltando
+3. **Escolha a letra** - Clique na letra correta (T)
+4. **Comemore!** 🎉 - Confetes, sons e estrelas ao acertar
+5. **Continue** - Clique em "Próxima →" para nova palavra
 
-### Teclas de Atalho (Computador)
-- **Letras**: Digite a letra para escolhê-la
-- **🔊 Ouvir**: Clique para repetir a palavra
+### Controles
+- **🔊 Ouvir**: Repete a palavra em voz alta
+- **⚙️ Configurações**: Abre menu de opções
+- **Teclado (PC)**: Digite a letra para selecioná-la
+
+### Menu de Configurações
+Clique no botão **⚙️** para:
+- **Liga/desligar sons** do jogo
+- **Escolher categoria**: Jogar só animais, comidas, etc.
+- **Ver informações** sobre o jogo
+
+👉 **[Ver Guia Completo de Funcionalidades](FUNCIONALIDADES.md)**
 
 ## 🌟 Níveis de Dificuldade
 
@@ -154,14 +179,24 @@ Siga o guia: **[ATIVACAO_RAPIDA.md](ATIVACAO_RAPIDA.md)**
 
 Livre para uso pessoal e educacional. Feito com ❤️ para ajudar na alfabetização infantil.
 
-## 🎯 Roadmap Futuro
+## 📦 O que há de novo (v2.0)
 
-- [ ] Modo de digitação (escrever a palavra completa)
-- [ ] Sons personalizados (aplausos, buzinas)
-- [ ] Temas visuais (noturno, pastel, etc)
-- [ ] Mais categorias (animais, frutas, cores)
+### ✅ Implementado
+- ✅ **400+ palavras** (antes: 200)
+- ✅ **Sistema de sons** com Web Audio API
+- ✅ **Menu de configurações** interativo
+- ✅ **8 modos de categoria** (Animais, Comidas, etc.)
+- ✅ **Toggle de sons** (liga/desliga)
+- ✅ **Contador de palavras únicas** jogadas
+- ✅ **Bug de repetição** corrigido
+
+### 🎯 Próximas Melhorias
+- [ ] Modo de digitação (escrever palavra completa)
 - [ ] Sistema de conquistas/medalhas
-- [ ] Modo multiplayer (dois jogadores)
+- [ ] Palavras customizadas pelos pais
+- [ ] Temas visuais (cores diferentes)
+- [ ] Modo multiplayer
+- [ ] Gráfico de progresso temporal
 
 ---
 
