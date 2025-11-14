@@ -2,8 +2,20 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Joguinho das Letras - Alfabetização Divertida</title>
+
+  <!-- PWA Meta Tags -->
+  <meta name="description" content="Jogo educativo de alfabetização para crianças. Aprenda brincando com mais de 550 palavras!" />
+  <meta name="theme-color" content="#667eea" />
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- iOS Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Letrinhas" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
   <style>
     * {
       box-sizing: border-box;
@@ -613,20 +625,52 @@
     }
 
     @media (max-width: 600px) {
-      .settings-btn {
-        top: 10px;
-        right: 10px;
+      body {
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      }
+
+      .game-wrapper {
+        padding: 15px;
+        max-width: 100%;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .settings-btn, .achievements-btn {
+        top: max(10px, env(safe-area-inset-top));
         width: 45px;
         height: 45px;
         font-size: 1.3rem;
       }
 
+      .settings-btn {
+        right: max(10px, env(safe-area-inset-right));
+      }
+
+      .achievements-btn {
+        right: max(65px, calc(65px + env(safe-area-inset-right)));
+      }
+
       .modal-content {
         padding: 20px;
+        max-height: 90vh;
+        overflow-y: auto;
       }
 
       .category-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .category-btn {
+        padding: 12px 8px;
+        font-size: 0.85rem;
+      }
+
+      .section-title {
+        font-size: 0.95rem;
       }
     }
   </style>
@@ -1460,6 +1504,21 @@
 
     // Inicia o jogo
     pickNewWord();
+
+    // ==========================================
+    // PWA - SERVICE WORKER
+    // ==========================================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => {
+            console.log('✅ Service Worker registrado:', registration.scope);
+          })
+          .catch(error => {
+            console.log('❌ Erro ao registrar Service Worker:', error);
+          });
+      });
+    }
   </script>
 </body>
 </html>
