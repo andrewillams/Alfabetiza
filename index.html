@@ -443,6 +443,9 @@
   <!-- Banco de Palavras -->
   <script src="js/words-bank.js"></script>
 
+  <!-- Sistema de Sons -->
+  <script src="js/sounds.js"></script>
+
   <!-- Jogo Principal -->
   <script>
 
@@ -489,12 +492,18 @@
         levelBadgeEl.textContent = 'Nível Médio 🌟🌟';
         showMessage('Parabéns! Você subiu de nível! 🎉', 'ok');
         launchConfetti();
+
+        // 🔊 Som de mudança de nível!
+        if (window.gameSounds) window.gameSounds.playLevelUp();
       } else if (score >= 20 && currentLevel === 'medium') {
         currentLevel = 'hard';
         usedWords = []; // Reseta palavras usadas ao mudar de nível
         levelBadgeEl.textContent = 'Nível Difícil 🌟🌟🌟';
         showMessage('Incrível! Você é expert! 🏆', 'ok');
         launchConfetti();
+
+        // 🔊 Som de mudança de nível!
+        if (window.gameSounds) window.gameSounds.playLevelUp();
       }
     }
 
@@ -594,12 +603,17 @@
         launchConfetti();
         createStars();
 
+        // 🔊 Som de acerto!
+        if (window.gameSounds) window.gameSounds.playCorrect();
+
         setTimeout(() => speakWord(true), 400);
       } else {
         btn.classList.add("wrong-shake");
         setTimeout(() => btn.classList.remove("wrong-shake"), 400);
         showMessage("Ops! Tente de novo! 😊💪", "error");
-        playSound('wrong');
+
+        // 🔊 Som de erro (gentil)
+        if (window.gameSounds) window.gameSounds.playWrong();
       }
     }
 
@@ -690,12 +704,18 @@
         star.style.animationDelay = (i * 0.1) + 's';
         container.appendChild(star);
 
+        // 🔊 Som de estrela para cada uma
+        if (window.gameSounds) {
+          setTimeout(() => window.gameSounds.playStar(), i * 100);
+        }
+
         setTimeout(() => star.remove(), 1000);
       }
     }
 
     // Event Listeners
     nextWordBtn.addEventListener("click", () => {
+      if (window.gameSounds) window.gameSounds.playClick();
       pickNewWord();
     });
 
